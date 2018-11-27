@@ -4,7 +4,7 @@ let path = require("path");
 let promise=new Promise((resolve,reject)=>{
     //规范的路径写法
     fs.readFile(path.join(__dirname,'../file/1.txt'),"utf8",function(err,data){
-        err?reject(err):resolve(data);//调用函数改变状态
+        err?reject(err):resolve(data);//调用函数改变状态(异步回调)
     });
 });
 
