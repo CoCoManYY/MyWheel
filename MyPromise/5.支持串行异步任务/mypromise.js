@@ -84,7 +84,7 @@ MyPromise.prototype.then=function(onFulfilled,onRejected){
             self.onFulfilledCallbacks.push((value)=>{
                 try{
                     let x =onFulfilled(value);
-                    resolvePromise(bridgePromise,x,resolve,reject);
+                    resolvePromise(bridgePromise,x,resolve,reject);//链式改变状态
                 }catch(e){
                     reject(e);
                 }
