@@ -9,6 +9,7 @@ let promise=new Promise((resolve,reject)=>{
 
 let f1=function(data){
     console.log(data);
+    throw new Error;
     return new Promise((resolve,reject)=>{
         fs.readFile(path.join(__dirname,'../file/2.txt'),'utf8',function(err,data){
             err?reject(err):resolve(data);

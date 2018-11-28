@@ -62,10 +62,21 @@ function resolvePromise(bridgePromise,x,resolve,reject){
 **这个函数里面传入了P1的resolve和reject函数，不管传多少层下去，resolvePromise都是P1的回调函数**这个一定要弄清楚。
 如果我们传进来的x是一个pending状态的promise，那么我们就调用x的then方法给它注册回掉函数，如果成功就解析以下它resolve了什么值，如果还是promise就继续调用then，直到，resolve的值是一个正常值为止。
 这是我们f1中返回的promise返回了一个正常值，我们需要的便是调用P1中的resolve函数将正常值作为参数，此时P1执行成功便会调用之前注册的f2函数，如此便可顺利进行下去。
+##### reject线
+刚刚把resolve这条线走通了，我们现在来看看reject。
+1. 我们首先需要注意到，我们执行fn以及之侧的回调函数等等都会使用try-catch来包裹，无论哪里会有异常，我们都会进入reject分支。
+2. 进入reject分支之后，我们会要执行```onRejectedCallbacks```里面的函数，**还记得吗？then方法在开始时如果onReject函数缺省则会直接```{throw error}```哦。所以错误就会一直一直往后抛，一直到最后抛到catch。
+3. 哦，catch在这里只是一个语法糖，它也是调用一个then的方法，但是只传onReject函数！我们来see see
+```
+MyPromise.prototype.catch=function(onRejected){
+    return this.then(null,onRejected);
+}
+```
+
 
 #### 感想
 这个让我真的绕了很久，一开始以为是同步异步的问题，后来才发现是逻辑的问题。写在这里避免忘记！
 **重点**：
 1. 一定要在then注册时返回一个新的promise，这样才能保证串行且异步的任务的顺序执行。
 2. 注意要进行对回掉函数返回结果的处理，因为需要主要路径中的promise它resolve的参数需要正常值。
-
+3. error是冒泡出来的~~~
