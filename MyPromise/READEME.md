@@ -1,5 +1,5 @@
 ## mypromise
-####  基础版本
+### 基础版本
 - **首先定义类**：其中包括成功的值、错误的原因以及相应的回掉函数四个变量；紧接着声明两个函数：分别为成功状态的函数和失败状态的函数；再调用回调函数读取文件。
 - 再在其原型链上then方法注册 当resolve(成功)/reject(失败)的回调函数
 - 在测试代码中通过判断条件来进行resolve/reject的调用，改变promise实例的状态。
@@ -7,7 +7,7 @@
 
 **问题**：1. 为什么一定要先将实例缓存起来？例如在resolve函数中的this指向本函数而不是promise对象了
 
-#### 支持串行异步任务
+### 支持串行异步任务
 想了好久才想明白，算是较为理透了promise的原理。其实总的来说我觉得promise就是让天生异步的JavaScript能够不要那么放荡不羁，按一定的顺序执行。
 整个代码十分的绕，理清楚不是很容易，其中还发现了Array.foreach是同步的（虽然这个和整个代码没有什么较大的关系）。
 一条条理：
@@ -62,7 +62,7 @@ function resolvePromise(bridgePromise,x,resolve,reject){
 **这个函数里面传入了P1的resolve和reject函数，不管传多少层下去，resolvePromise都是P1的回调函数**这个一定要弄清楚。
 如果我们传进来的x是一个pending状态的promise，那么我们就调用x的then方法给它注册回掉函数，如果成功就解析以下它resolve了什么值，如果还是promise就继续调用then，直到，resolve的值是一个正常值为止。
 这是我们f1中返回的promise返回了一个正常值，我们需要的便是调用P1中的resolve函数将正常值作为参数，此时P1执行成功便会调用之前注册的f2函数，如此便可顺利进行下去。
-##### reject线
+#### reject线
 刚刚把resolve这条线走通了，我们现在来看看reject。
 1. 我们首先需要注意到，我们执行fn以及之侧的回调函数等等都会使用try-catch来包裹，无论哪里会有异常，我们都会进入reject分支。
 2. 进入reject分支之后，我们会要执行```onRejectedCallbacks```里面的函数，**还记得吗？then方法在开始时如果onReject函数缺省则会直接```{throw error}```哦。所以错误就会一直一直往后抛，一直到最后抛到catch。
@@ -79,4 +79,7 @@ MyPromise.prototype.catch=function(onRejected){
 **重点**：
 1. 一定要在then注册时返回一个新的promise，这样才能保证串行且异步的任务的顺序执行。
 2. 注意要进行对回掉函数返回结果的处理，因为需要主要路径中的promise它resolve的参数需要正常值。
-3. error是冒泡出来的~~~
+3. error是冒泡出来的~
+### 达到promise/A+的标准
+参考[promise/A+标准](https://segmentfault.com/a/1190000002452115)
+
