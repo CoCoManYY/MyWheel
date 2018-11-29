@@ -82,4 +82,5 @@ MyPromise.prototype.catch=function(onRejected){
 3. error是冒泡出来的~
 ### 达到promise/A+的标准
 参考[promise/A+标准](https://segmentfault.com/a/1190000002452115)
-
+### 关于promise.race
+一开始我的测试都是两个都会输出来，一度怀疑是代码出问题了，后来将其中一个改成了setTimeOut，然后就正常了，我猜应该是文件读写的速度足够快，以致于他们在resolve的时候状态判断都是pending，状态的改变是在settimeout里面的！是异步的，关于异步和任务队列之类的我还要理一下。
