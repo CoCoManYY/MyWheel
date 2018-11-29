@@ -136,16 +136,16 @@ MyPromise.prototype.catch = function(onRejected) {
 }
 
 MyPromise.all = function(promises) {
-    return new MyPromise((resolve, reject)=> {
+    return new MyPromise(function(resolve, reject) {
         let result = [];
         let count = 0;
         for (let i = 0; i < promises.length; i++) {
-            promises[i].then((data)=> {
+            promises[i].then(function(data) {
                 result[i] = data;
                 if (++count == promises.length) {
                     resolve(result);
                 }
-            }, (error)=> {
+            }, function(error) {
                 reject(error);
             });
         }
@@ -153,24 +153,24 @@ MyPromise.all = function(promises) {
 }
 
 MyPromise.race = function(promises) {
-    return new MyPromise((resolve, reject)=> {
+    return new MyPromise(function(resolve, reject) {
         for (let i = 0; i < promises.length; i++) {
-            promises[i].then((data)=> {
+            promises[i].then(function(data) {
                 resolve(data);
-            }, (error)=> {
+            }, function(error) {
                 reject(error);
             });
         }
     });
 }
 
-MyPromise.resolve = (value)=> {
+MyPromise.resolve = function(value) {
     return new MyPromise(resolve => {
         resolve(value);
     });
 }
 
-MyPromise.reject = (error)=> {
+MyPromise.reject = function(error) {
     return new MyPromise((resolve, reject) => {
         reject(error);
     });

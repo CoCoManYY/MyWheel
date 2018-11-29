@@ -9,19 +9,21 @@ let p1=new Promise((resolve,reject)=>{
 })
 
 let p2=new Promise((resolve,reject)=>{
-    fs.readFile(path.join(__dirname,'../file/2.txt'),'utf8',(err,data)=>{
+    setTimeout(() => {
+        fs.readFile(path.join(__dirname,'../file/2.txt'),'utf8',(err,data)=>{
         err?reject(err):resolve(data);
     })
+    }, 3000); 
 })
 
-Promise.all([p1,p2]).then(result=>{
+Promise.all([p1, p2]).then(function(result) {
     console.log(result);
-},error=>{
-    console.log(error);
-})
+}, function(error) {
+    console.log(error)
+});
 
-Promise.race([p1,p2]).then(result=>{
+Promise.race([p1, p2]).then(function(result) {
     console.log(result);
-},err=>{
-    console.log(err);
-})
+}, function(error) {
+    console.log(error)
+});
