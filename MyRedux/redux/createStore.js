@@ -1,4 +1,8 @@
-export default function createStore(reducer){
+export default function createStore(reducer,enhancer){
+    //支持中间件
+    if(typeof enhancer!=='undefined'){
+        return enhancer(createStore)(reducer);
+    }
     let state=null//用来存储全局状态
     let listeners =[];//用来存储状态发生变化时的回掉函数数组
 

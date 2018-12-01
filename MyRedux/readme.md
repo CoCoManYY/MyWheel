@@ -28,3 +28,13 @@ let b = composeFn(x)
 |第二轮循环|fn1(fn2(...args))|fn3|(...args)=>fn1(fn2(fn3(...args)))|
 |第一轮循环|fn1(fn2(fn3(...args)))|fn4|fn1(fn2(fn3(fn4((...args))))|
 ## applyMiddleware
+总的来说applyMiddleware方法是用来改造dispatch来增强功能的
+**大致做成过程**：当我们执行```const store = createStore(reducer,applyMiddleware(logger))```时，首先```applyMiddleware(logger)```执行，将logger存在闭包里，然后返回了一个接收createStore方法的函数，并作为第二个参数传入createStore方法。因为有了第二个参数，就会执行这段代码：
+```
+if (typeof enhancer === 'function') {
+    return enhancer(createStore)(reducer)
+}
+```
+我们继续执行的时刚刚返回的函数，把createStore函数存到了它的闭包里面，返回一个函数，传入参数reducer，最终返回reducer参数的结果。
+
+**其实最主要的是最后函数内部封装了dispatch并且覆盖store对象中的原始方法**
