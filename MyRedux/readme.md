@@ -57,3 +57,6 @@ const middlewareAPI={
 let mid=middleware(middlewareAPI);
 dispatch=mid(store.dispatch);
 ```
+
+
+参考资料：[从0开始写一个redux](https://juejin.im/post/5b29025ee51d4558b64f10bf)
