@@ -1,7 +1,7 @@
 import compose from './compose';
 import createStore from './createStore';
 
-function applyMiddleware(...middlewares){
+export default function applyMiddleware(...middlewares){
     (createStore)=>(reducer)=>{
         const store=createStore(reducer);
         let dispatch=store.dispatch;
