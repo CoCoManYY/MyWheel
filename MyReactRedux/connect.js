@@ -19,9 +19,9 @@ export default function connnect(mapStateToProps,mapDispatchToProps){
             }
             render(){
                 let actions={};
-                if(typeof mapDispatchToProps==='function'){//只有一个
+                if(typeof mapDispatchToProps==='function'){//可以是个函数
                     actions=mapDispatchToProps(this.store.dispatch);
-                }else if(typeof mapDispatchToProps==='object'){//多个生成集合
+                }else if(typeof mapDispatchToProps==='object'){//对象，需要自己再封装
                     actions=bindActionCreators(mapDispatchToProps,this.store.dispatch);
                 }
                 return <WrapedComponent {...this.state} {...actions}/>
