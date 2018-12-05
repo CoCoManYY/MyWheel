@@ -19,9 +19,9 @@ export default function connnect(mapStateToProps,mapDispatchToProps){
             }
             render(){
                 let actions={};
-                if(typeof mapDispatchToProps==='function'){
+                if(typeof mapDispatchToProps==='function'){//只有一个
                     actions=mapDispatchToProps(this.store.dispatch);
-                }else if(typeof mapDispatchToProps==='object'){
+                }else if(typeof mapDispatchToProps==='object'){//多个生成集合
                     actions=bindActionCreators(mapDispatchToProps,this.store.dispatch);
                 }
                 return <WrapedComponent {...this.state} {...actions}/>
