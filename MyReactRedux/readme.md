@@ -1,0 +1,5 @@
+## provider
+首先我们看一下provider，它是一个高阶组件，我们可以看到使用它时将包裹在跟组建的外边，并且store作为它的props传入禁区，它的作用就是将自己作为所有组件的根组件，然后将store挂载到它的context上，让它下面的所有子组件都可以共享全局状态。
+## connect
+如果仅仅只用provider行不行，当然可以，因为store已经挂载到了根组件上的context，所有子组件都可以通过context访问到store，然后使用store里的状态，并且用store的dispatch提交action更新状态，但是这样还是有些不便利，因为每个组件都对context的依赖过强，造成了组件与store打交道的逻辑和组建本身逻辑都耦合了一起，使得组件无法复用。
+我们的理想状态
