@@ -5,6 +5,8 @@
 **我们的理想状态:**让组件与store打交道的部分放在外层组件，内层组件只负责自身的逻辑
 ![](https://github.com/CoCoManYY/MyWheel/blob/master/MyReactRedux/connect%E7%A4%BA%E4%BE%8B.jpg?raw=true)
 **一个组件的渲染应该只依赖于外界传进去的props和自己的state，而并不依赖于其他外界的任何数据，这样的组件复用性是最强的。**
+当然首先我们必须了解react的生命周期：
+![](https://github.com/CoCoManYY/MyWheel/blob/master/MyReactRedux/react%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F.jpg?raw=true)
 #### 具体实现步骤：
 1. 首先接受```mapStateToProps```，```mapDispatchToProps```并返回一个函数，返回的函数接受一个组件。
 2. 声明一个壳组件，我们可以通过context拿到store对象。
