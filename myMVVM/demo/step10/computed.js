@@ -37,3 +37,5 @@ export default class Computed{
         })
     }
 }
+
+// 总的来说，我们使用的Vue中的compute的效果都是归功于脏检查
