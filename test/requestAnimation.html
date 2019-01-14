@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+
+    </div>
+</body>
+<script>
+window.onload=()=>{
+    console.log("hanshu")
+    var myReq;
+    function step() {
+        let node=document.createElement("p");
+        let textnode=document.createTextNode("添加")
+        node.appendChild(textnode);
+        document.getElementById("app").appendChild(node);
+        myReq = window.requestAnimationFrame(step);
+    }
+    myReq = window.requestAnimationFrame(step);
+    // cancelAnimationFrame(myReq);
+}
+</script>
+</html>
