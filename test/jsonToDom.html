@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app"></div>
+</body>
+<script>
+window.onload=()=>{
+    let element ={
+    tagName:'ul',
+    props:{
+        id:'list',
+    },
+    children:[
+        {tagName:'li',props:{class:'item'},children:["item1"]},
+        {tagName:'li',props:{class:'item'},children:["item2"]},
+        {tagName:'li',props:{class:'item'},children:["item3"]},
+    ]
+}
+
+function Element(tagName,props,children){
+    this.tagName=tagName;
+    this.props=props;
+    this.children=children;
+}
+
+Element.prototype.render=function(){
+    let ul=document.createElement(this.tagName);
+    let props=this.props;
+    let children=this.children;
+    for(let propName in props){
+        propValue=props[propName];
+        ul.setAttribute(propName,propValue);
+    }
+    children.forEach(child => {
+        let childEl=(child instanceof Object)?
+                    (new Element(child.tagName,child.props,child.children)).render()
+                    :document.createTextNode(child);
+        ul.appendChild(childEl);
+    });
+    return ul;
+}
+
+let ulRoot=(new Element(element.tagName,element.props,element.children)).render();
+let app=document.getElementById('app');
+app.appendChild(ulRoot);
+}
+</script>    
+</html>
