@@ -1,0 +1,10 @@
+a={
+    x:'hhh',
+    y:{
+        z:'444'
+    }
+}
+b=JSON.parse(JSON.stringify(a));
+b.y.z='hhhhh';
+console.log(a);
+console.log(b);
