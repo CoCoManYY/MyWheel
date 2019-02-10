@@ -30,35 +30,18 @@ function add(x){
 
 
 add(1)(2)(3)(4);
-
-var add=(function(){
-    var args=[];
-    function addInner(){
-        if(arguments.length===0){
-            return calResult;
-        }else{
-            Array.prototype.push.apply(args,Array.prototype.splice.call(arguments,0));
-            return add;
-        }
-
+// 柯里化
+function add(){
+    let _args=[].slice.apply(arguments);
+    let _adder=function(){
+        _args.push(...arguments);
+        return _adder;
     }
-    function calResult(){
-        console.log(args)
-        var result=args.reduce(function(previousValue, currentValue){
-            return previousValue+currentValue;
-        },0);
-        return result;
+    _adder.toString=function(){
+        return _args.reduce((a,b)=>a+b); 
     }
-    addInner.valueOf=function(){
-        return calResult();
-    };
-
-    addInner.toString=function(){
-        return calResult()+'';
-    };
-
-    return addInner;
-}());
-
-
-console.log('%d',add(1)(2)(3)(4));
+    return _adder;
+}
+console.log(add(1, 2, 3, 4, 5));  // 15
+console.log(add(1, 2, 3, 4)(5));  // 15
+console.log(add(1)(2)(3)(4)(5));  // 15
