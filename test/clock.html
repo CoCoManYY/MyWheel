@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>时钟</title>
+    <style id="css">
+        ul,li{
+            padding: 0;
+            margin: 0;
+            list-style: none;
+        }
+        .box{
+            width: 200px;
+            height:200px;
+            margin:100px auto;
+            border:2px solid #000;
+            border-radius: 50%;
+            position: relative;
+            /* background: url("images/bg.jpg") no-repeat;为了好看，我添加了一个背景 */
+            background-size:100% 100%;
+        }
+        .box ul{
+            height: 200px;
+            position: relative;
+        }
+        .box ul li{
+            width: 2px;
+            height: 6px;
+            background-color: black;
+            position: absolute;
+            left: 99px;
+            top:0px;
+            -webkit-transform-origin: center 100px;
+        }
+        .box ul li:nth-of-type(5n+1){height: 12px}
+        #hour{
+            width: 4px;
+            height: 45px;
+            position: absolute;
+            left: 98px;
+            top:55px;
+            background-color: #000;
+            -webkit-transform-origin: bottom;
+        }
+        #min{
+            width: 2px;
+            height: 60px;
+            position: absolute;
+            left:99px;
+            top:40px;
+            background-color: #999;
+            -webkit-transform-origin: bottom;
+            -webkit-transform: rotate(60deg);
+        }
+        #sec{
+            width: 2px;
+            height: 75px;
+            position: absolute;
+            left:99px;
+            top:25px;
+            background-color: #ff2834;
+            -webkit-transform-origin: bottom;
+            -webkit-transform: rotate(36deg);
+        }
+        #circle{
+            width: 16px;
+            height: 16px;
+            position: absolute;
+            left:92px;
+            top:92px;
+            background-color: #000;
+            border-radius: 50%;
+        }
+    </style>
+</head>
+<body>
+<div class="box">
+    <ul id="timeList"></ul>
+    <div id="hour"></div>
+    <div id="min"></div>
+    <div id="sec"></div>
+    <div id="circle"></div>
+</div>
+</body>
+<script>
+    window.onload=function(){
+        var oCss = document.getElementById("css");
+        var oList =  document.getElementById("timeList");
+        var oHour = document.getElementById("hour");
+        var oMIn = document.getElementById("min");
+        var oSec = document.getElementById("sec");
+ 
+        addList();
+        addTime();
+        setInterval(function () {
+            addTime();
+        },1000);
+	//添加时钟的刻度
+        function addList(){
+            var aLi ="";
+            var sCss="";
+            for (var i = 0; i < 60; i ++){
+                sCss +=".box ul li:nth-of-type("+(i+1)+"){transform: rotate("+i*6+"deg);}";
+                aLi +="<li></li>";
+            }
+            oCss.innerHTML+=sCss;
+            oList.innerHTML=aLi;
+        };
+	//获取时针、分针、秒针的度数
+        function addTime(){
+            var oDate = new Date();
+            var iSec = oDate.getSeconds();
+            var iMin = oDate.getMinutes()+iSec/60;
+            var iHour = (oDate.getHours()%12)+iMin/60;
+ 
+            oSec.style.transform="rotate("+(iSec*360/60)+"deg)";
+            oMIn.style.transform="rotate("+(iMin*360/60)+"deg)";
+            oHour.style.transform="rotate("+(iHour*360/12)+"deg)";
+        }
+    };
+</script>
+</html>
