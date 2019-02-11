@@ -14,7 +14,6 @@ function Child(like){
 
 Child.prototype=new Parent();
 
-
 ///组合继承
 function Person(name){
     this.name=name;
