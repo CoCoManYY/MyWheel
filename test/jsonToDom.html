@@ -7,7 +7,9 @@
     <title>Document</title>
 </head>
 <body>
-    <div id="app"></div>
+    <div id="app">
+        <a href="https://juejin.im/post/5ad6182df265da23906c8627">参考</a>
+    </div>
 </body>
 <script>
 window.onload=()=>{
@@ -49,6 +51,106 @@ Element.prototype.render=function(){
 let ulRoot=(new Element(element.tagName,element.props,element.children)).render();
 let app=document.getElementById('app');
 app.appendChild(ulRoot);
+}
+
+// diff
+let keyIndex=0;
+
+function diff(oldTree,newTree){
+    let patches={};
+    keyIndex=0;
+    let index=0;
+    walk(oldTree,newTree,index,patches);
+    return patches;
+}
+
+function walk(oldNode,newNode,index,patches){
+    let currentPatches=[];
+    if(!newNode){
+        currentPatches.push({type:'REMOVE',index});
+    }else if(typeof oldNode==='string'&&typeof newNode==='string'){
+        if(oldNode!==newNode){
+            currentPatches.push({type:'TEXT',content:newNode});
+        }
+    }else if(oldNode.tagName===newNode.tagName){
+        let attrsPatch=diffAttr(oldNode.attrs,newNode.attrs);
+        if(Object.keys(attrsPatch).length>0){
+            currentPatches.push({type:'ATTRS',attrs:attrsPatch});
+        }
+        diffChildren(oldNode.children,newNode.children,index,patches,currentPatches);
+    }else{
+        currentPatches.push({type:'REPLACE',node:newNode});
+    }
+    if(currentPatches.length>0){
+        patches[index]=currentPatches;
+    }
+}
+
+
+function diffChildren(oldChildren,newChildren,index,patches,currentPatches){
+    oldChildren.forEach((child,index) => {
+        walk(child,newChildren[index],++keyIndex,patches);
+    });
+}
+
+function diffAttr(oldAttrs,newAttrs){
+    let attrsPatch={};
+    for(let attr in oldAttrs){
+        if(oldAttrs[attr]!==newAttrs[attr]){
+            attrsPatch[attr]=newAttrs[attr];
+        }
+    }
+    for(let attr in newAttrs){
+        if(!oldAttrs.hasOwnProperty(attr)){
+            attrsPatch[attr]=newAttrs(attr);
+        }
+    }
+    return attrsPatch;
+}
+
+// patch
+let keyIndex = 0;
+let allPatches;
+
+function patch(root,patches){
+    allPatches=patches;
+    walk(root);
+}
+
+function walk(node){//遍历
+    let currentPatches=allPatches[keyIndex++];
+    (node.childNode||[]).forEach(child=>walk(child));
+    if(currentPatches){
+        doPatch(node,currentPatches);
+    }
+}
+
+function doPatch(node,currentPatches){
+    currentPatches.forEach(patch=>{
+        switch(patch.type){
+            case 'ATTRS':
+                for(let attr in patch.attrs){
+                    let value=patch.attrs[attr];
+                    if(value){
+                        node.setAttribute(attr,value);
+                    }else{
+                        node.removeAttribute(attr);
+                    }
+                }
+                break;
+            case 'TEXT':
+                node.textContent = patch.content;
+                break;
+            case 'REPLACE':
+                let newNode=(patch.node instanceof Element)?patch.node.render()
+                                                            : document.createTextNode(path.node);
+                node.parentNode.replaceChild(newNode,node);
+                break;
+            case 'REMOVE':
+                node.parentNode.removeChild(node);
+                break;
+        }
+    })
 }
 </script>    
 </html>
