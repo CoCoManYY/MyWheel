@@ -9,6 +9,7 @@ function quickSort(array){
         while(array[right]>=array[0]&&left<right) right--;
         while(array[left]<=array[0]&&left<right) left++;//left<right很重要
         if(left==right){
+            // 下次复习这里是突破口
             let mid=array[right];
             array[right]=array[0];
             array[0]=mid;
