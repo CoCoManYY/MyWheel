@@ -7,10 +7,15 @@ function flatten(arr) {
 
 function flatten1(arr){
     while(arr.some(item=>Array.isArray(item))){
-        arr=[].concat(...arr);
+        arr=[].concat( ...arr);
     }
     return arr;
 }
+
+function flatten2(arr){
+    return arr.toString().split(',');
+}
+
 arr = [1,2,2,3,3,4,4,5,5,5,6];
 function simplify(arr){
     let result=new Set();
@@ -20,6 +25,7 @@ function simplify(arr){
     return Array.from(result);
 }
 
-console.log(flatten(arr))
-console.log(flatten1(arr))
+console.log(flatten(arr));
+console.log(flatten1(arr));
+console.log(flatten2(arr));
 console.log(simplify(arr));

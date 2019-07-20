@@ -40,6 +40,9 @@ function add(){
     _adder.toString=function(){
         return _args.reduce((a,b)=>a+b); 
     }
+    _adder.valueOf=function(){
+        return _args.reduce((a,b)=>a+b); 
+    }
     return _adder;
 }
 console.log(add(1, 2, 3, 4, 5));  // 15
